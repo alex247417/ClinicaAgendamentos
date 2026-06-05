@@ -20,6 +20,9 @@ export default function Login() {
             // Redireciona para a tela de agendamentos (que vamos criar a seguir)
             navigate('/agendamentos');
         } catch (error) {
+            // Adicione este console.log para ver o que a API respondeu
+            console.log("MOTIVO DO ERRO:", error.response?.data);
+
             setErro('Usuário ou senha inválidos.');
         }
     };

@@ -22,9 +22,9 @@ public class AuthController : ControllerBase
             var token = await _loginUseCase.ExecutarAsync(request.Email, request.Senha);
             return Ok(new { Token = token });
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return Unauthorized(new { erro = "Usuário ou senha inválidos." });
+            return BadRequest(new { erro = ex.Message });
         }
     }
 }

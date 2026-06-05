@@ -2,17 +2,35 @@ using System.Text;
 using ClinicaAgendamentos.Application.Interfaces;
 using ClinicaAgendamentos.Application.UseCases.Auth;
 using ClinicaAgendamentos.Application.UseCases.Consultas;
+using ClinicaAgendamentos.Domain.Interfaces;
+using ClinicaAgendamentos.Infrastructure.Data;
+using ClinicaAgendamentos.Infrastructure.Repositories;
 using ClinicaAgendamentos.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
+var hash = BCrypt.Net.BCrypt.HashPassword("123456");
+Console.WriteLine("COPIE ESTE HASH EXATAMENTE: " + hash);
+
 var builder = WebApplication.CreateBuilder(args);
 
+
 // 1. Injeção de Dependência (Repositories e Services)
+
+// Registro dos Repositórios (Dapper)
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IConsultaRepository, ConsultaRepository>();
+builder.Services.AddScoped<IPacienteRepository, PacienteRepository>();
+builder.Services.AddScoped<IProfissionalRepository, ProfissionalRepository>();
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddScoped<DbConnectionFactory>(provider => new DbConnectionFactory(connectionString!));
+
+// Registro dos Casos de Uso
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<LoginUseCase>();
 builder.Services.AddScoped<AgendarConsultaUseCase>();
+
 
 
 // 2. Configurar Autenticação JWT
@@ -38,6 +56,17 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddControllers();
+// Configuração CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddEndpointsApiExplorer();
 
 // 3. Configurar Swagger para aceitar o Token JWT
@@ -79,6 +108,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

@@ -1,5 +1,7 @@
 ﻿using ClinicaAgendamentos.Domain.Interfaces;
 using ClinicaAgendamentos.Application.Interfaces;
+using System;
+using System.Threading.Tasks;
 
 namespace ClinicaAgendamentos.Application.UseCases.Auth;
 
@@ -18,9 +20,8 @@ public class LoginUseCase
     {
         var usuario = await _usuarioRepository.ObterPorEmailAsync(email);
         
-        // Simulação de validação de senha (em produção usaria BCrypt ou similar)
-        if (usuario == null || usuario.SenhaHash != senha) 
-            throw new Exception("Usuário ou senha inválidos.");
+        if (usuario == null || !BCrypt.Net.BCrypt.Verify(senha, usuario.SenhaHash)) 
+            throw new UnauthorizedAccessException("Usuário ou senha inválidos.");
 
         return _tokenService.GerarToken(usuario);
     }
