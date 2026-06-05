@@ -6,16 +6,28 @@ namespace ClinicaAgendamentos.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize] // Bloqueia o acesso para quem não tem o Token JWT
+[Authorize]
 public class ConsultasController : ControllerBase
 {
     private readonly AgendarConsultaUseCase _agendarConsultaUseCase;
+    private readonly ObterAgendaUseCase _obterAgendaUseCase;
 
-    public ConsultasController(AgendarConsultaUseCase agendarConsultaUseCase)
+    public ConsultasController(
+        AgendarConsultaUseCase agendarConsultaUseCase,
+        ObterAgendaUseCase obterAgendaUseCase)
     {
         _agendarConsultaUseCase = agendarConsultaUseCase;
+        _obterAgendaUseCase = obterAgendaUseCase;
     }
 
+    
+    [HttpGet("agenda/{profissionalId}")]
+    public async Task<IActionResult> ObterAgenda(int profissionalId, [FromQuery] DateTime data)
+    {
+        var consultas = await _obterAgendaUseCase.ExecutarAsync(profissionalId, data);
+        return Ok(consultas);
+    }
+    
     [HttpPost("agendar")]
     public async Task<IActionResult> Agendar([FromBody] AgendarConsultaRequest request)
     {
@@ -36,7 +48,7 @@ public class ConsultasController : ControllerBase
     }
 }
 
-// Crie este DTO no mesmo arquivo ou na camada Application -> DTOs
+
 public class AgendarConsultaRequest
 {
     public int PacienteId { get; set; }
