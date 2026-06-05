@@ -10,8 +10,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-var hash = BCrypt.Net.BCrypt.HashPassword("123456");
-Console.WriteLine("COPIE ESTE HASH EXATAMENTE: " + hash);
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +28,11 @@ builder.Services.AddScoped<DbConnectionFactory>(provider => new DbConnectionFact
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<LoginUseCase>();
 builder.Services.AddScoped<AgendarConsultaUseCase>();
+builder.Services.AddScoped<ObterAgendaUseCase>();
+builder.Services.AddScoped<ClinicaAgendamentos.Application.UseCases.Pacientes.CadastrarPacienteUseCase>();
+builder.Services.AddScoped<ClinicaAgendamentos.Application.UseCases.Pacientes.ListarPacientesUseCase>();
+builder.Services.AddScoped<ClinicaAgendamentos.Application.UseCases.Profissionais.CadastrarProfissionalUseCase>();
+builder.Services.AddScoped<ClinicaAgendamentos.Application.UseCases.Profissionais.ListarProfissionaisUseCase>();
 
 
 
