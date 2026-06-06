@@ -66,7 +66,7 @@ export default function Agendamentos() {
                 Cadastrar Paciente
             </button>
             <button onClick={() => { localStorage.removeItem('token'); navigate('/login'); }}
-                style={{ marginLeft: '10px' }}>
+                    style={{ marginLeft: '10px' }}>
                 Sair
             </button>
 
@@ -81,7 +81,7 @@ export default function Agendamentos() {
                 />
                 <select
                     value={profissionalId}
-                    onChange={(e) => { setProfissionalId(e.target.value); }}
+                    onChange={(e) => setProfissionalId(e.target.value)}
                     required
                 >
                     <option value="">Selecione o profissional</option>
@@ -90,4 +90,26 @@ export default function Agendamentos() {
                     ))}
                 </select>
                 <input
-                    type="datetime
+                    type="datetime-local"
+                    value={dataHora}
+                    onChange={(e) => setDataHora(e.target.value)}
+                    required
+                />
+                <button type="submit">Agendar</button>
+            </form>
+
+            {sucesso && <p style={{ color: 'green' }}>{sucesso}</p>}
+            {erro && <p style={{ color: 'red' }}>{erro}</p>}
+
+            <h3>Agenda do Profissional</h3>
+            <button onClick={carregarAgenda}>Ver agenda de hoje</button>
+            <ul>
+                {consultas.map((c, i) => (
+                    <li key={i}>
+                        Paciente {c.pacienteId} — {new Date(c.dataHoraInicio).toLocaleTimeString()}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+}

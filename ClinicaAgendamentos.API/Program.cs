@@ -1,4 +1,5 @@
 using System.Text;
+using ClinicaAgendamentos.API.Middleware;
 using ClinicaAgendamentos.Application.Interfaces;
 using ClinicaAgendamentos.Application.UseCases.Auth;
 using ClinicaAgendamentos.Application.UseCases.Consultas;
@@ -33,7 +34,7 @@ builder.Services.AddScoped<ClinicaAgendamentos.Application.UseCases.Pacientes.Ca
 builder.Services.AddScoped<ClinicaAgendamentos.Application.UseCases.Pacientes.ListarPacientesUseCase>();
 builder.Services.AddScoped<ClinicaAgendamentos.Application.UseCases.Profissionais.CadastrarProfissionalUseCase>();
 builder.Services.AddScoped<ClinicaAgendamentos.Application.UseCases.Profissionais.ListarProfissionaisUseCase>();
-
+builder.Services.AddScoped<DatabaseInitializer>();
 
 
 // 2. Configurar Autenticação JWT
@@ -112,8 +113,15 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowAll");
+app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var initializer = scope.ServiceProvider.GetRequiredService<DatabaseInitializer>();
+    initializer.Initialize();
+}
 
 app.Run();

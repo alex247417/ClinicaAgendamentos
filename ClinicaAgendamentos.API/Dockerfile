@@ -23,4 +23,5 @@ RUN dotnet publish "./ClinicaAgendamentos.API.csproj" -c $BUILD_CONFIGURATION -o
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+RUN mkdir -p /app/data
 ENTRYPOINT ["dotnet", "ClinicaAgendamentos.API.dll"]
