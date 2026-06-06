@@ -1,4 +1,6 @@
-﻿import { useState, useEffect } from 'react';
+﻿import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
@@ -138,17 +140,27 @@ export default function Agendamentos() {
                         <option key={p.id} value={p.id}>{p.nome} - {p.especialidade}</option>
                     ))}
                 </select>
-                <input
-                    type="datetime-local"
-                    value={dataHora}
-                    onChange={(e) => {
-                        const val = e.target.value;
-                        if (val) {
-                            const ano = new Date(val).getFullYear();
+                <DatePicker
+                    selected={dataHora ? new Date(dataHora) : null}
+                    onChange={(date) => {
+                        if (date) {
+                            const ano = date.getFullYear();
                             if (ano > 9999) return;
+                            const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+                                .toISOString()
+                                .slice(0, 16);
+                            setDataHora(local);
                         }
-                        setDataHora(val);
                     }}
+                    showTimeSelect
+                    timeFormat="HH:mm"
+                    timeIntervals={30}
+                    dateFormat="dd/MM/yyyy HH:mm"
+                    minDate={new Date()}
+                    filterDate={(date) => date.getDay() !== 0 && date.getDay() !== 6}
+                    minTime={new Date(new Date().setHours(8, 0, 0))}
+                    maxTime={new Date(new Date().setHours(17, 30, 0))}
+                    placeholderText="Selecione data e hora"
                     required
                 />
                 <button type="submit">Agendar</button>
