@@ -6,17 +6,10 @@ namespace ClinicaAgendamentos.Application.UseCases.Consultas;
 public class AgendarConsultaUseCase
 {
     private readonly IConsultaRepository _consultaRepository;
-    private readonly IPacienteRepository _pacienteRepository;
-    private readonly IProfissionalRepository _profissionalRepository;
 
-    public AgendarConsultaUseCase(
-        IConsultaRepository consultaRepository,
-        IPacienteRepository pacienteRepository,
-        IProfissionalRepository profissionalRepository)
+    public AgendarConsultaUseCase( IConsultaRepository consultaRepository)
     {
         _consultaRepository = consultaRepository;
-        _pacienteRepository = pacienteRepository;
-        _profissionalRepository = profissionalRepository;
     }
 
     public async Task ExecutarAsync(int pacienteId, int profissionalId, DateTime dataHoraInicio)

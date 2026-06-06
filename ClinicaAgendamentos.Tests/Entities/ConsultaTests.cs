@@ -11,7 +11,7 @@ public class ConsultaTests
         // Arrange
         var pacienteId = 1;
         var profissionalId = 1;
-        var dataSabado = new DateTime(2026, 6, 6, 10, 0, 0); // 06/06/2026 cai num sábado
+        var dataSabado = new DateTime(2026, 6, 13, 10, 0, 0); // 13/06/2026 é sábado
 
         // Act & Assert
         var exception = Assert.Throws<Exception>(() => new Consulta(pacienteId, profissionalId, dataSabado));

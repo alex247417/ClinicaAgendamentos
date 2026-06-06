@@ -19,7 +19,7 @@ public class DatabaseInitializer
             CREATE TABLE IF NOT EXISTS Usuarios (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 Email TEXT NOT NULL,
-                Senha TEXT NOT NULL
+                SenhaHash TEXT NOT NULL
             );
             CREATE TABLE IF NOT EXISTS Pacientes (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -38,7 +38,7 @@ public class DatabaseInitializer
                 DataHoraInicio TEXT NOT NULL,
                 DataHoraFim TEXT NOT NULL
             );
-            INSERT OR IGNORE INTO Usuarios (Id, Email, Senha) 
+            INSERT OR IGNORE INTO Usuarios (Id, Email, SenhaHash) 
             VALUES (1, 'admin@clinica.com', '$2a$11$SynxYXAXfTAgHwvL8rH03OuwBJZ9uvbsxBpImO3Iq2hPqpsAhyK8K');
         ");
     }

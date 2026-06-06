@@ -31,7 +31,7 @@ public class ConsultasController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { erro = ex.Message, detalhe = ex.InnerException?.Message });
+            return StatusCode(500, new { erro = "Erro interno ao obter agenda." });
         }
     }
     
@@ -49,7 +49,7 @@ public class ConsultasController : ControllerBase
         }
         catch (Exception ex)
         {
-            // Retorna um erro amigável se bater em alguma regra de negócio (DDD)
+            // Regra de negócio violada
             return BadRequest(new { erro = ex.Message });
         }
     }
@@ -58,7 +58,7 @@ public class ConsultasController : ControllerBase
 
 public class AgendarConsultaRequest
 {
-    public int PacienteId { get; set; }
-    public int ProfissionalId { get; set; }
-    public DateTime DataHoraInicio { get; set; }
+    public required int PacienteId { get; set; }
+    public required int ProfissionalId { get; set; }
+    public required DateTime DataHoraInicio { get; set; }
 }
