@@ -49,15 +49,15 @@ docker-compose up --build
 
 ## 📁 Estrutura do projeto
 
+```
 ClinicaAgendamentos/
-├── ClinicaAgendamentos.API/          # Controllers, Middleware, Swagger
-├── ClinicaAgendamentos.Application/  # Casos de uso
-├── ClinicaAgendamentos.Domain/       # Entidades e interfaces
+├── ClinicaAgendamentos.API/            # Controllers, Middleware, Swagger
+├── ClinicaAgendamentos.Application/    # Casos de uso
+├── ClinicaAgendamentos.Domain/         # Entidades e interfaces
 ├── ClinicaAgendamentos.Infrastructure/ # Repositórios (Dapper) e banco
-├── ClinicaAgendamentos.Tests/        # Testes unitários
-└── clinica-frontend/                 # React + Vite
-
----
+├── ClinicaAgendamentos.Tests/          # Testes unitários
+└── clinica-frontend/                   # React + Vite
+```
 
 ## 📋 Regras de negócio implementadas
 
