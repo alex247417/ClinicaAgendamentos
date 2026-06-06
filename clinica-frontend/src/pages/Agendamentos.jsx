@@ -11,7 +11,7 @@ export default function Agendamentos() {
     const [dataHora, setDataHora] = useState('');
     const [dataBusca, setDataBusca] = useState(new Date().toISOString().split('T')[0]);
 
-    // PASSO 1: Estado adicionado aqui junto com os outros
+    
     const [foiBuscado, setFoiBuscado] = useState(false);
 
     const [erro, setErro] = useState('');
@@ -66,6 +66,13 @@ export default function Agendamentos() {
         e.preventDefault();
         setErro('');
         setSucesso('');
+        
+        const dataDigitada = new Date(dataHora);
+        if (dataDigitada.getFullYear() > 2100) {
+            setErro('Data inválida. Verifique o ano digitado.');
+            return;
+        }
+
         try {
             await api.post('/Consultas/agendar', {
                 pacienteId: parseInt(pacienteId),
@@ -108,7 +115,7 @@ export default function Agendamentos() {
             <h3>Nova Consulta</h3>
             <form onSubmit={handleAgendar} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
 
-                {/* COLE O SELECT DO PACIENTE AQUI, LOGO NO COMEÇO DO FORMULÁRIO */}
+                
                 <select
                     value={pacienteId}
                     onChange={(e) => setPacienteId(e.target.value)}
@@ -120,7 +127,7 @@ export default function Agendamentos() {
                     ))}
                 </select>
 
-                {/* O RESTO CONTINUA IGUAL... */}
+                
                 <select
                     value={profissionalId}
                     onChange={(e) => setProfissionalId(e.target.value)}
@@ -134,7 +141,14 @@ export default function Agendamentos() {
                 <input
                     type="datetime-local"
                     value={dataHora}
-                    onChange={(e) => setDataHora(e.target.value)}
+                    onChange={(e) => {
+                        const val = e.target.value;
+                        if (val) {
+                            const ano = new Date(val).getFullYear();
+                            if (ano > 9999) return;
+                        }
+                        setDataHora(val);
+                    }}
                     required
                 />
                 <button type="submit">Agendar</button>
@@ -164,7 +178,7 @@ export default function Agendamentos() {
                 </div>
             )}
 
-            {/* Lista com visual de Cards */}
+            
             {consultas.length > 0 && (
                 <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                     {consultas.map((c, i) => (
