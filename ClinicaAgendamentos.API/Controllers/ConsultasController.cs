@@ -24,8 +24,15 @@ public class ConsultasController : ControllerBase
     [HttpGet("agenda/{profissionalId}")]
     public async Task<IActionResult> ObterAgenda(int profissionalId, [FromQuery] DateTime data)
     {
-        var consultas = await _obterAgendaUseCase.ExecutarAsync(profissionalId, data);
-        return Ok(consultas);
+        try
+        {
+            var consultas = await _obterAgendaUseCase.ExecutarAsync(profissionalId, data);
+            return Ok(consultas);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { erro = ex.Message, detalhe = ex.InnerException?.Message });
+        }
     }
     
     [HttpPost("agendar")]
