@@ -3,8 +3,8 @@
 public class Paciente
 {
     public int Id { get; private set; }
-    public string Nome { get; private set; }
-    public string Cpf { get; private set; }
+    public string Nome { get; private set; } = null!;
+    public string Cpf { get; private set; } = null!;
     
     protected Paciente() { }
 

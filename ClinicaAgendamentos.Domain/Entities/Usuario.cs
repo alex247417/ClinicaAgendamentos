@@ -3,10 +3,9 @@
 public class Usuario
 {
     public int Id { get; private set; }
-    public string Email { get; private set; }
-    public string SenhaHash { get; private set; }
+    public string Email { get; private set; } = null!;
+    public string SenhaHash { get; private set; } = null!;
     
-    // Construtor vazio para o Dapper
     protected Usuario() { }
 
     public Usuario(string email, string senhaHash)
